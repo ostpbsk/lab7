@@ -42,9 +42,12 @@
     font-weight: bold;
 }
 
-.btn-dark {
+.btn-secondary {
     margin-top: 10px;
     font-weight: bold;
     border-color: #d4d4d4 !important;
-    border: 5px !important;
+    border: 10px !important;
+
 }
+
+

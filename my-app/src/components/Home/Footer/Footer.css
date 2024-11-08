@@ -1,11 +1,8 @@
 /* Footer.css */
-.featured-section {
-    margin-bottom: 0;
-    margin-top: 25px !important;
-}
+
 
 .footer-dark {
-    margin-top: 0;
+    margin-top: 0 !important;
 }
 
 .footer-dark {

@@ -1,12 +1,21 @@
-// src/components/Catalog/Card.js
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "./Card.css";
 
-import React from 'react';
-import './Card.css';
+const Card = ({ id, image, genre, artist, releaseDate, price }) => {
+  const navigate = useNavigate();
 
-const Card = ({ image, genre, artist, releaseDate, price }) => {
+  const handleViewMore = () => {
+    navigate(`/catalog/item/${id}`);
+  };
+
   return (
     <div className="card catalog-card bg-dark text-light">
-      <img src={image} className="card-img-top catalog-card-img" alt={`${artist} cover`} />
+      <img
+        src={image}
+        className="card-img-top catalog-card-img"
+        alt={`${artist} cover`}
+      />
       <div className="card-body d-flex flex-column">
         <h5 className="card-title">{artist}</h5>
         <p className="card-text catalog-text">
@@ -18,7 +27,9 @@ const Card = ({ image, genre, artist, releaseDate, price }) => {
         <p className="card-text price">
           <strong>Price:</strong> ${price}
         </p>
-        <button className="btn btn-dark mt-auto">Add to Cart</button>
+        <button className="btn btn-secondary mt-auto" onClick={handleViewMore}>
+          View More
+        </button>
       </div>
     </div>
   );

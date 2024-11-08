@@ -1,78 +1,126 @@
-import React from 'react';
-import './Topbar.css';
+// Topbar.js
+
+import React, { useContext } from "react";
+import { ItemContext } from "../ItemPage/context/ItemContext";
+import "./Topbar.css";
 
 const Topbar = () => {
+  const {
+    searchText,
+    setSearchText,
+    setSelectedGenre,
+    setSelectedRelease,
+    setSelectedArtist,
+  } = useContext(ItemContext);
+
+  const onClear = () => {
+    setSelectedGenre("");
+    setSelectedRelease("");
+    setSelectedArtist("");
+    setSearchText("");
+  };
+
   return (
     <div className="topbar-container">
       <div className="topbar bg-dark text-light py-3">
         <div className="container-fluid d-flex align-items-center gap-3">
-          
-          {/* Filter Dropdowns */}
           <div className="filters d-flex gap-3">
-            {/* Genre Filter */}
             <div className="dropdown">
-              <button 
-                className="btn btn-dark dropdown-toggle" 
-                type="button" 
-                id="genreDropdown" 
-                data-bs-toggle="dropdown" 
+              <button
+                className="btn btn-dark dropdown-toggle"
+                type="button"
+                id="genreDropdown"
+                data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 Genre
               </button>
-              <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="genreDropdown">
-                <li><button className="dropdown-item" type="button">Rock</button></li>
-                <li><button className="dropdown-item" type="button">Pop</button></li>
-                <li><button className="dropdown-item" type="button">Metal</button></li>
-                <li><button className="dropdown-item" type="button">Indie</button></li>
-                <li><button className="dropdown-item" type="button">Alternative</button></li>
+              <ul
+                className="dropdown-menu dropdown-menu-dark"
+                aria-labelledby="genreDropdown"
+              >
+                {["Rock", "Metal", "Indie", "Alternative"].map((genre) => (
+                  <li key={genre}>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => setSelectedGenre(genre)}
+                    >
+                      {genre}
+                    </button>
+                  </li>
+                ))}
               </ul>
             </div>
 
-            {/* Release Filter */}
             <div className="dropdown">
-              <button 
-                className="btn btn-dark dropdown-toggle" 
-                type="button" 
-                id="releaseDropdown" 
-                data-bs-toggle="dropdown" 
+              <button
+                className="btn btn-dark dropdown-toggle"
+                type="button"
+                id="releaseDropdown"
+                data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 Release
               </button>
-              <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="releaseDropdown">
-                <li><button className="dropdown-item" type="button">2023</button></li>
-                <li><button className="dropdown-item" type="button">2022</button></li>
-                <li><button className="dropdown-item" type="button">2021</button></li>
-                <li><button className="dropdown-item" type="button">2020</button></li>
-                <li><button className="dropdown-item" type="button">2010s</button></li>
-                <li><button className="dropdown-item" type="button">2000s</button></li>
+              <ul
+                className="dropdown-menu dropdown-menu-dark"
+                aria-labelledby="releaseDropdown"
+              >
+                {["2016", "2014", "2003", "1999", "1998", "1997", "1994"].map(
+                  (release) => (
+                    <li key={release}>
+                      <button
+                        className="dropdown-item"
+                        onClick={() => setSelectedRelease(release)}
+                      >
+                        {release}
+                      </button>
+                    </li>
+                  )
+                )}
               </ul>
             </div>
 
-            {/* Artist Names Filter */}
             <div className="dropdown">
-              <button 
-                className="btn btn-dark dropdown-toggle" 
-                type="button" 
-                id="artistDropdown" 
-                data-bs-toggle="dropdown" 
+              <button
+                className="btn btn-dark dropdown-toggle"
+                type="button"
+                id="artistDropdown"
+                data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 Artist Names
               </button>
-              <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="artistDropdown">
-                <li><button className="dropdown-item" type="button">Artist A</button></li>
-                <li><button className="dropdown-item" type="button">Artist B</button></li>
-                <li><button className="dropdown-item" type="button">Artist C</button></li>
-                <li><button className="dropdown-item" type="button">Artist D</button></li>
+              <ul
+                className="dropdown-menu dropdown-menu-dark"
+                aria-labelledby="artistDropdown"
+              >
+                {["Mitski", "Korn", "MSI", "Muse"].map((artist) => (
+                  <li key={artist}>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => setSelectedArtist(artist)}
+                    >
+                      {artist}
+                    </button>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
-
-          {/* Apply Button */}
-          <button className="btn btn-success apply-button ms-auto" type="button">
-            Apply
+          <input
+            type="text"
+            className="form-control search-input"
+            placeholder="Search by artist, genre, etc."
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+          />
+          <button
+            className="btn btn-success apply-button ms-auto"
+            type="button"
+            onClick={onClear}
+          >
+            Clear
           </button>
         </div>
       </div>
