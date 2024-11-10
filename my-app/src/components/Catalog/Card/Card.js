@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Card.css";
 
-const Card = ({ id, image, genre, artist, releaseDate, price }) => {
+const Card = ({ id, image, genre, artist, title, releaseDate, price }) => {
   const navigate = useNavigate();
 
   const handleViewMore = () => {
@@ -17,7 +17,7 @@ const Card = ({ id, image, genre, artist, releaseDate, price }) => {
         alt={`${artist} cover`}
       />
       <div className="card-body d-flex flex-column">
-        <h5 className="card-title">{artist}</h5>
+        <h5 className="card-title">{artist} - {title}</h5> {/* Display artist and title */}
         <p className="card-text catalog-text">
           <strong>Genre:</strong> {genre}
         </p>

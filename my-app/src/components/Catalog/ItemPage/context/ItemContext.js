@@ -1,85 +1,54 @@
-import React, { createContext, useState } from "react";
+// context/ItemContext.js
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
+const API_BASE_URL = "http://localhost:5000";
 
 export const ItemContext = createContext();
 
-const sampleData = [
-  {
-    id: 1,
-    image: "https://i.scdn.co/image/ab67616d0000b27350d216aebaf98e8ac9947fd5",
-    genre: "Metal",
-    artist: "Korn - All in the family",
-    releaseDate: "1998",
-    price: 15.99,
-  },
-  {
-    id: 2,
-    image: "https://i.scdn.co/image/ab67616d0000b273ea5c6ae7cde0e306c58a5e41",
-    genre: "Alternative",
-    artist: "MSI - Prescription",
-    releaseDate: "1997",
-    price: 7.99,
-  },
-  {
-    id: 3,
-    image: "https://i.scdn.co/image/ab67616d0000b27368fcc49ba28db7131e60fa66",
-    genre: "Indie",
-    artist: "Mitski - Drunk Walk Home",
-    releaseDate: "2014",
-    price: 15.99,
-  },
-  {
-    id: 4,
-    image: "https://i.scdn.co/image/ab67616d0000b27329eb9ad9b9af34bbb54eb053",
-    genre: "Indie",
-    artist: "Mitski - I Bet On Losing Dogs",
-    releaseDate: "2016",
-    price: 420.99,
-  },
-  {
-    id: 5,
-    image: "https://i.scdn.co/image/ab67616d0000b27386bddc6359ffef0f9c51e56e",
-    genre: "Alternative",
-    artist: "MSI - Stupid MF",
-    releaseDate: "1999",
-    price: 420.99,
-  },
-  {
-    id: 6,
-    image: "https://i.scdn.co/image/ab67616d0000b2738cb690f962092fd44bbe2bf4",
-    genre: "Rock",
-    artist: "Muse - Hysteria",
-    releaseDate: "2003",
-    price: 420.99,
-  },
-  {
-    id: 7,
-    image: "https://i.scdn.co/image/ab67616d0000b2737153b1cf6ee990c2a9fa46cc",
-    genre: "Metal",
-    artist: "Korn - Clown",
-    releaseDate: "1994",
-    price: 420.99,
-  },
-  {
-    id: 8,
-    image: "https://i.scdn.co/image/ab67616d0000b2731c229cb7c9851fb0c67e2af8",
-    genre: "Metal",
-    artist: "Korn - Make Me Bad",
-    releaseDate: "1999",
-    price: 420.99,
-  },
-];
-
 export const ItemProvider = ({ children }) => {
-  const [items, setItems] = useState(sampleData);
+  const [items, setItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [selectedGenre, setSelectedGenre] = useState("");
   const [selectedRelease, setSelectedRelease] = useState("");
   const [selectedArtist, setSelectedArtist] = useState("");
 
+  // Fetch items from API when filters (genre, release, artist) change
+  useEffect(() => {
+    const fetchItems = async () => {
+      try {
+        const filters = {
+          genre: selectedGenre,
+          releaseDate: selectedRelease,
+          artist: selectedArtist,
+        };
+        const response = await axios.get(`${API_BASE_URL}/api/clips`, { params: filters });
+        setItems(response.data);
+        setFilteredItems(response.data); // Initially set filtered items to match fetched items
+      } catch (error) {
+        console.error("Error fetching items:", error);
+      }
+    };
+    fetchItems();
+  }, [selectedGenre, selectedRelease, selectedArtist]);
+
+  // Frontend filtering by song title only (case and space insensitive)
+  useEffect(() => {
+    if (searchText) {
+      const normalizedSearch = searchText.toLowerCase().replace(/\s+/g, " ").trim();
+      const filtered = items.filter((item) =>
+        `${item.artist} ${item.title}`.toLowerCase().includes(normalizedSearch)
+      );
+      setFilteredItems(filtered);
+    } else {
+      setFilteredItems(items); // Reset to all items when search text is empty
+    }
+  }, [searchText, items]);
+
   return (
     <ItemContext.Provider
       value={{
-        items,
+        items: filteredItems, // Provide filtered items to the app
         setItems,
         searchText,
         setSearchText,

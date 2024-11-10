@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { ItemContext } from "./context/ItemContext";
+import axios from "axios";
 import "./ItemPage.css";
 
 const ItemPage = () => {
@@ -9,7 +10,6 @@ const ItemPage = () => {
   const { items } = useContext(ItemContext);
 
   const item = items.find((item) => item.id === parseInt(itemId));
-
   const [quantity, setQuantity] = useState(1);
   const [format, setFormat] = useState("Vinyl");
 
@@ -17,9 +17,19 @@ const ItemPage = () => {
     return <div className="container">Item not found.</div>;
   }
 
-  const handleAddToCart = () => {
-    alert(`Added ${quantity} x ${format} of ${item.artist} to cart!`);
-    navigate("/cart"); // Navigate to cart page (or keep on item page)
+  const handleAddToCart = async () => {
+    try {
+      await axios.post("/api/cart", {
+        itemId: item.id,
+        quantity,
+        format,
+      });
+      alert(`Added ${quantity} x ${format} of ${item.title} to cart!`);
+      navigate("/cart");
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      alert("Failed to add item to cart.");
+    }
   };
 
   return (
@@ -33,7 +43,8 @@ const ItemPage = () => {
           />
         </div>
         <div className="col-md-7">
-          <h2 className="display-5">{item.artist}</h2>
+        <h2 className="display-5">{item.artist} - {item.title}</h2>
+
           <p>
             <strong>Genre:</strong> {item.genre}
           </p>

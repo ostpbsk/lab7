@@ -1,23 +1,10 @@
-// Cards.js
-
 import React, { useContext } from "react";
 import Card from "../Card/Card";
-import { ItemContext } from "../ItemPage/context/ItemContext";
+import { ItemContext } from "../ItemPage/context/ItemContext"; 
 import "./Cards.css";
 
 const Cards = () => {
-  const { items, searchText, selectedGenre, selectedRelease, selectedArtist } =
-    useContext(ItemContext);
-
-  const filteredItems = items.filter(
-    (item) =>
-      (searchText === "" ||
-        item.artist.toLowerCase().includes(searchText.toLowerCase()) ||
-        item.genre.toLowerCase().includes(searchText.toLowerCase())) &&
-      (selectedGenre === "" || item.genre === selectedGenre) &&
-      (selectedRelease === "" || item.releaseDate.includes(selectedRelease)) &&
-      (selectedArtist === "" || item.artist.includes(selectedArtist))
-  );
+  const { items: filteredItems } = useContext(ItemContext); 
 
   return (
     <div className="container-fluid">

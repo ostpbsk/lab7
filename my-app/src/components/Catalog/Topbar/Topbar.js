@@ -1,6 +1,5 @@
-// Topbar.js
-
 import React, { useContext } from "react";
+import { useLocation } from "react-router-dom";
 import { ItemContext } from "../ItemPage/context/ItemContext";
 import "./Topbar.css";
 
@@ -12,6 +11,9 @@ const Topbar = () => {
     setSelectedRelease,
     setSelectedArtist,
   } = useContext(ItemContext);
+
+  const location = useLocation();
+  const isItemPage = location.pathname.includes("/item/");
 
   const onClear = () => {
     setSelectedGenre("");
@@ -32,18 +34,17 @@ const Topbar = () => {
                 id="genreDropdown"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
+                disabled={isItemPage} 
               >
                 Genre
               </button>
-              <ul
-                className="dropdown-menu dropdown-menu-dark"
-                aria-labelledby="genreDropdown"
-              >
+              <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="genreDropdown">
                 {["Rock", "Metal", "Indie", "Alternative"].map((genre) => (
                   <li key={genre}>
                     <button
                       className="dropdown-item"
                       onClick={() => setSelectedGenre(genre)}
+                      disabled={isItemPage} 
                     >
                       {genre}
                     </button>
@@ -59,25 +60,22 @@ const Topbar = () => {
                 id="releaseDropdown"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
+                disabled={isItemPage}
               >
                 Release
               </button>
-              <ul
-                className="dropdown-menu dropdown-menu-dark"
-                aria-labelledby="releaseDropdown"
-              >
-                {["2016", "2014", "2003", "1999", "1998", "1997", "1994"].map(
-                  (release) => (
-                    <li key={release}>
-                      <button
-                        className="dropdown-item"
-                        onClick={() => setSelectedRelease(release)}
-                      >
-                        {release}
-                      </button>
-                    </li>
-                  )
-                )}
+              <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="releaseDropdown">
+                {["2016", "2014", "2003", "1999", "1998", "1997", "1994"].map((release) => (
+                  <li key={release}>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => setSelectedRelease(release)}
+                      disabled={isItemPage}
+                    >
+                      {release}
+                    </button>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -88,18 +86,17 @@ const Topbar = () => {
                 id="artistDropdown"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
+                disabled={isItemPage}
               >
                 Artist Names
               </button>
-              <ul
-                className="dropdown-menu dropdown-menu-dark"
-                aria-labelledby="artistDropdown"
-              >
-                {["Mitski", "Korn", "MSI", "Muse"].map((artist) => (
+              <ul className="dropdown-menu dropdown-menu-dark" aria-labelledby="artistDropdown">
+                {["mitski", "Korn", "MSI", "Muse"].map((artist) => (
                   <li key={artist}>
                     <button
                       className="dropdown-item"
                       onClick={() => setSelectedArtist(artist)}
+                      disabled={isItemPage}
                     >
                       {artist}
                     </button>
@@ -114,11 +111,13 @@ const Topbar = () => {
             placeholder="Search by artist, genre, etc."
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
+            disabled={isItemPage} 
           />
           <button
             className="btn btn-success apply-button ms-auto"
             type="button"
             onClick={onClear}
+            disabled={isItemPage} 
           >
             Clear
           </button>
