@@ -1,4 +1,4 @@
-// src/components/Catalog/Cards.js
+
 
 import React from 'react';
 import Card from '../Card/Card';
@@ -53,7 +53,6 @@ const sampleData = [
     releaseDate: '2003',
     price: 420.99,
   }
-  // Add more items as needed
 ];
 
 const Cards = () => {
